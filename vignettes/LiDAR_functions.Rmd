@@ -1,0 +1,76 @@
+---
+title: "LiDAR functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{LiDAR_functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ERK)
+library(data.table)
+library(ggplot2)
+```
+
+## get_beam_diameter_at_distance
+
+First we set up a data.table with combintations of 3 beam exit diameters, 3 beam divergences, a sequence of scanner-target distances, and a sequence of leaf characteristic dimensions. 
+
+```{r}
+
+beam_diameter_at_exit <- c(0.5*0.007, 0.007 , 2*0.007)
+beam_divergence <- c(0.0003, 0.5*0.0003, 2*0.0003)
+distance <- seq(0,20,1)
+ld <- seq(0.02, 0.1, 0.01)
+df <- data.table(expand.grid(bdae = beam_diameter_at_exit, bd = beam_divergence, d = distance, ld = ld))
+
+# calculate beam diameter at the target
+df[, bdad := get_beam_diameter_at_distance(d, bdae , bd)]
+ 
+# calculate the ratio between the beam diameter and the leaf dimension
+df[, Fr := bdad/ld]
+
+```
+
+```{r}
+
+ggplot(df, aes(d, bdad*1000, group = interaction(bdae, bd))) +
+  theme_bw() +
+  geom_line(aes(color = factor(bdae))) +
+  geom_hline(yintercept = beam_diameter_at_exit*1000, linetype = 2) +
+  coord_cartesian(ylim = c(0, 20)) +
+  ylab("beam diameter [mm]") +
+  xlab("distance to target [m]")
+
+```
+
+```{r, fig.width = 10}
+
+ggplot(df, aes(d, Fr, group = interaction(bdae, bd, ld))) +
+  theme_bw() +
+  geom_line(aes(color = factor(bdae))) +
+  geom_hline(yintercept = beam_diameter_at_exit*1000, linetype = 2) +
+  coord_cartesian(ylim = c(0, 1)) +
+  ylab("beam diameter/leaf dimension") +
+  xlab("distance to target [m]") +
+  facet_grid(.~ld)
+
+```
+
+Each panel in the above figure represents a different leaf dimension.
+
+
+
+
+
+
+
+
