@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 ```{r setup}
@@ -40,7 +42,7 @@ df[, Fr := bdad/ld]
 
 ```
 
-```{r}
+```{r, fig.width = 5}
 
 ggplot(df, aes(d, bdad*1000, group = interaction(bdae, bd))) +
   theme_bw() +
@@ -67,9 +69,31 @@ ggplot(df, aes(d, Fr, group = interaction(bdae, bd, ld))) +
 
 Each panel in the above figure represents a different leaf dimension.
 
+## get_target_height_range
 
+```{r}
 
+distance <- seq(0,20,1)
+height <- c(1,2)
+df <- data.table(expand.grid( distance = distance, scanner_height = height))
 
+df[, height_min := get_target_height_range(distance, scanner_height, theta_min = 30, theta_max = 130)[,1]]
+df[, height_max := get_target_height_range(distance, scanner_height, theta_min = 30, theta_max = 130)[,2]]
+
+```
+
+```{r, fig.width = 5}
+
+ggplot(df, aes(distance, scanner_height, group = scanner_height, color = factor(scanner_height))) +
+  theme_bw() +
+  geom_line(aes(distance, height_min)) +
+  geom_line(aes(distance, height_max)) +
+  coord_cartesian(ylim = c(0, 40)) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  ylab("height (m)") +
+  xlab("distance (m)")
+
+```
 
 
 

@@ -4,7 +4,7 @@ create_package("../ERK/")
 
 use_git()
 
-use_r("get_beam_diameter_at_distance")
+# use_r("get_beam_diameter_at_distance")
 
 load_all()
 
@@ -21,8 +21,9 @@ devtools::build_readme()
 
 
 library(usethis)
-usethis::use_vignette("LiDAR_functions")
+# usethis::use_vignette("LiDAR_functions")
 devtools::build_rmd("./vignettes/LiDAR_functions.Rmd")
 
 
+# use_r("get_target_height_range")
 
