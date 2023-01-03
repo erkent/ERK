@@ -47,7 +47,7 @@ overall_facet_labels <- function(p, labelR = "", labelT = "", where = "top", inp
 
     stripT <- grid::gTree(name = "Strip_top", children = grid::gList(
       grid::rectGrob(gp = grid::gpar(col = NA, fill = NA)),
-      grid::textGrob(labelT, gp = grid::gpar(fontsize = current_fontsize, col = current_fontcol))))
+      grid::textGrob(labelT, gp = grid::gpar(fontsize = current_fontsize, col = current_fontcol, fontfamily = current_font))))
     # Position the grobs in the gtable
     z <- gtable::gtable_add_grob(z, stripT, t = min(posT$t), l = min(posT$l), r = max(posT$r), name = "strip-top")
 
@@ -75,7 +75,7 @@ overall_facet_labels <- function(p, labelR = "", labelT = "", where = "top", inp
     # get the font information from the current x axis label
     current_fontsize <- z$grobs[[grep("xlab-b",z$layout$name)]]$children[[1]]$gp$fontsize
     current_fontcol <- z$grobs[[grep("xlab-b",z$layout$name)]]$children[[1]]$gp$col
-    #current_font <- z$grobs[[grep("xlab-b",z$layout$name)]]$children[[1]]$gp$font
+    current_font <- z$grobs[[grep("xlab-b",z$layout$name)]]$children[[1]]$gp$fontfamily
 
     #current_lwd <- z$grobs[[grep("axis-b-1",z$layout$name)]]$children[[2]]$grob[[1]]$gp$lwd
     current_lwd <- 2
@@ -85,7 +85,7 @@ overall_facet_labels <- function(p, labelR = "", labelT = "", where = "top", inp
     # Construct the new strip grobs
     stripR <- grid::gTree(name = "Strip_right", children = grid::gList(
       grid::rectGrob(gp = grid::gpar(col = NA, fill = NA)),
-      grid::textGrob(labelR, rot = -90, gp = grid::gpar(fontsize = current_fontsize, col = current_fontcol))))
+      grid::textGrob(labelR, rot = -90, gp = grid::gpar(fontsize = current_fontsize, col = current_fontcol, fontfamily = current_font))))
     # Position the grobs in the gtable
     #z <- gtable_add_grob(z, stripR, t = min(posR$t)+1, l = max(posR$r) + 1, b = max(posR$b)+1, name = "strip-right")
     z <- gtable::gtable_add_grob(z, stripR, t = min(posR$t), l = max(posR$r) + 1, b = max(posR$b), name = "strip-right")
