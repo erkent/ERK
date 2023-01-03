@@ -1,0 +1,77 @@
+---
+title: "Plotting Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{plotting_functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+```{r setup}
+library(ERK)
+library(ggplot2)
+library(gtable)
+library(ggplotify)
+library(grid)
+```
+
+
+## overall_facet_labels
+
+First set up some sample data and plot with facets: 
+
+```{r}
+
+dsamp <- ggplot2::diamonds[sample(nrow(diamonds), 1000), ]
+
+```
+
+```{r, fig.width = 5}
+
+d <- ggplot(dsamp, aes(carat, price)) +
+ geom_point(aes(colour = clarity)) +
+ facet_grid(color~cut)
+
+d 
+```
+
+Add overall facet labels on both the top and right: 
+```{r, fig.width = 5}
+
+overall_facet_labels(p = d, labelR = "Right Label", labelT = "Top Label", where = "both")
+
+```
+
+Only facet horizontally and add overall facet label at the top: 
+
+```{r, fig.width = 5}
+
+d2 <- ggplot(dsamp, aes(carat, price)) +
+ geom_point(aes(colour = clarity)) +
+ facet_grid(.~cut)
+
+overall_facet_labels(d2, labelR = "Right Label", labelT = "Top Label", where = "top")
+```
+
+Only facet vertically and add overall facet label at the right: 
+
+
+```{r, fig.width = 5}
+
+d2 <- ggplot(dsamp, aes(carat, price)) +
+ geom_point(aes(colour = clarity)) +
+ facet_grid(cut~.)
+
+overall_facet_labels(p = d2, labelR = "Right Label", labelT = "Top Label", where = "right")
+
+```
+

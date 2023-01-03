@@ -2,3 +2,4 @@
 
 export(get_beam_diameter_at_distance)
 export(get_target_height_range)
+export(overall_facet_labels)

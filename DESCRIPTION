@@ -14,4 +14,7 @@ Suggests:
 VignetteBuilder: knitr
 Imports: 
     data.table,
-    ggplot2
+    ggplot2,
+    ggplotify,
+    grid,
+    gtable
