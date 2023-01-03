@@ -22,6 +22,7 @@ library(ggplot2)
 library(gtable)
 library(ggplotify)
 library(grid)
+library(showtext)
 ```
 
 
@@ -74,4 +75,41 @@ d2 <- ggplot(dsamp, aes(carat, price)) +
 overall_facet_labels(p = d2, labelR = "Right Label", labelT = "Top Label", where = "right")
 
 ```
+
+## using showtext package
+
+```{r, fig.showtext = TRUE, fig.width = 7}
+
+
+font_add(family = "Computer Modern", regular = "/usr/share/fonts/truetype/computer_modern/CMU_Serif_Roman.ttf")
+# font_families()
+
+showtext_auto()
+ 
+
+d3 <- d + theme(text = element_text(family = "Computer Modern"))
+
+d3
+
+d4 <- overall_facet_labels(p = d3, labelR = "Right Label", labelT = "Top Label", where = "both")
+
+d4
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

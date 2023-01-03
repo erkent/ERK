@@ -1,6 +1,6 @@
 library(devtools)
 
-create_package("../ERK/")
+# create_package("../ERK/")
 
 # use_git()
 
@@ -17,7 +17,7 @@ document()
 
 # use_readme_rmd()
 
-devtools::build_readme()
+# devtools::build_readme()
 
 
 library(usethis)
@@ -33,10 +33,10 @@ library(usethis)
 devtools::build_rmd(files = "./vignettes/plotting_functions.Rmd")
 
 
-use_package("grid")
-use_package("ggplotify")
-use_package("gtable")
-
+# use_package("grid")
+# use_package("ggplotify")
+# use_package("gtable")
+# use_package("showtext")
 
 
 getwd()

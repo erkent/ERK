@@ -17,4 +17,5 @@ Imports:
     ggplot2,
     ggplotify,
     grid,
-    gtable
+    gtable,
+    showtext
