@@ -23,10 +23,11 @@ library(gtable)
 library(ggplotify)
 library(grid)
 library(showtext)
+library(lemon)
+
 ```
 
-
-## overall_facet_labels
+## Set-up
 
 First set up some sample data and plot with facets: 
 
@@ -36,7 +37,7 @@ dsamp <- ggplot2::diamonds[sample(nrow(diamonds), 1000), ]
 
 ```
 
-```{r, fig.width = 5}
+```{r, fig.width = 8, fig.height =6}
 
 d <- ggplot(dsamp, aes(carat, price)) +
  geom_point(aes(colour = clarity)) +
@@ -45,8 +46,24 @@ d <- ggplot(dsamp, aes(carat, price)) +
 d 
 ```
 
-Add overall facet labels on both the top and right: 
-```{r, fig.width = 5}
+## theme_ERK()
+
+This custom theme is based on theme_classic() and removes borders around the strip labels as well as some other minor changes. Use facets=TRUE when faceting in x and y directions to remove extra space between facets. If only faceting in one direction facets=FALSE will probably produce better results. 
+
+```{r, fig.width = 8, fig.height =6}
+
+d <- ggplot(dsamp, aes(carat, price)) +
+  theme_ERK(facets=TRUE) +
+ geom_point(aes(colour = clarity)) +
+   facet_rep_grid(color~cut) 
+d 
+
+```
+## overall_facet_labels
+
+Add overall facet labels on both the top and right. 
+
+```{r, fig.width = 8, fig.height =6}
 
 overall_facet_labels(p = d, labelR = "Right Label", labelT = "Top Label", where = "both")
 
@@ -54,9 +71,10 @@ overall_facet_labels(p = d, labelR = "Right Label", labelT = "Top Label", where 
 
 Only facet horizontally and add overall facet label at the top: 
 
-```{r, fig.width = 5}
+```{r, fig.width = 8, fig.height =4}
 
 d2 <- ggplot(dsamp, aes(carat, price)) +
+  theme_ERK(facets=FALSE) +
  geom_point(aes(colour = clarity)) +
  facet_grid(.~cut)
 
@@ -66,9 +84,10 @@ overall_facet_labels(d2, labelR = "Right Label", labelT = "Top Label", where = "
 Only facet vertically and add overall facet label at the right: 
 
 
-```{r, fig.width = 5}
+```{r, fig.width = 5, fig.height = 6}
 
 d2 <- ggplot(dsamp, aes(carat, price)) +
+  theme_ERK(facets=FALSE) +
  geom_point(aes(colour = clarity)) +
  facet_grid(cut~.)
 
@@ -78,7 +97,9 @@ overall_facet_labels(p = d2, labelR = "Right Label", labelT = "Top Label", where
 
 ## using showtext package
 
-```{r, fig.showtext = TRUE, fig.width = 7}
+Note: I have had issues getting symbols (e.g., minus sign) and subscripts to show up correctly with Computer Modern Font. Recommend use of extrafonts package instead in these cases.  
+
+```{r, fig.showtext = TRUE, fig.width = 8, fig.height =6}
 
 
 font_add(family = "Computer Modern", regular = "/usr/share/fonts/truetype/computer_modern/CMU_Serif_Roman.ttf")
@@ -89,21 +110,103 @@ showtext_auto()
 
 d3 <- d + theme(text = element_text(family = "Computer Modern"))
 
-d3
-
 d4 <- overall_facet_labels(p = d3, labelR = "Right Label", labelT = "Top Label", where = "both")
 
 d4
 
 ```
 
+Here we also use reposition_legend from the lemon package: 
+
+```{r, fig.showtext = TRUE, fig.width = 7}
 
 
+# 
+# ## silly wrapper to fool ggplot2
+# #' @export
+# border_custom <- function(...){
+#   structure(
+#     list(...), # this ... information is not used, btw
+#     class = c("element_custom","element_blank", "element") # inheritance test workaround
+#   )
+# 
+# }
+# 
+# # these parts ensure only the left and bottom borders of each facet are there
+# #' @export
+# element_grob.element_custom <- function(element, ...)  {
+#   #https://www.howtobuildsoftware.com/index.php/how-do/b1YQ/r-plot-ggplot2-r-grid-removing-right-border-from-ggplot2-graph
+# 
+#   segmentsGrob(x0 = c(1,0),
+#                y0 = c(0,0),
+#                x1 = c(0,0),
+#                y1 = c(0,1), gp=gpar(lwd=2))
+# }
+# 
+# 
+# get_legend<-function(myggplot){
+#   tmp <- ggplot_gtable(ggplot_build(myggplot))
+#   leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+#   legend <- tmp$grobs[[leg]]
+#   return(legend)
+# }
 
+showtext_auto()
+ 
+d2 <- ggplot(dsamp, aes(carat, price)) +
+ geom_point(aes(colour = clarity)) +
+ facet_grid(.~cut)
 
+d2 <- d2 + theme(text = element_text(family = "Computer Modern"))
 
+d3 <- reposition_legend(d2 , 'center',  panel = "panel-1-1")
 
+overall_facet_labels(d3, labelR = "Right Label", labelT = "Top Label", where = "top", input = "grob")
 
+```
+
+## using extrafonts package
+
+```{r}
+
+# devtools::install_github("wch/extrafont")
+# install.packages("extrafontdb")
+# library(ggplot2)
+# library(extrafont)
+# 
+# font_import()
+# 
+# library(fontcm)
+# font_install('fontcm')
+# 
+# fonts()
+# # View(fonttable())
+# 
+# loadfonts()
+# 
+# pdf("ggplot_cm.pdf", width=4, height=4)
+# p <- qplot(c(1,5), c(1,5)) +
+#   xlab("Made with CM fonts") + ylab("Made with CM fonts") +
+#   ggtitle("Made with CM fonts")
+# 
+# # Equation
+# eq <- "italic(sum(frac(1, n*'!'), n==0, infinity) ==
+#        lim(bgroup('(', 1 + frac(1, n), ')')^n, n %->% infinity))"
+# 
+# # Without the new fonts
+# p + annotate("text", x=3, y=3, parse=TRUE, label=eq)
+# 
+# # With the new fonts
+# p + annotate("text", x=3, y=3, parse=TRUE, family="CM Roman", label=eq) +
+#   theme(text         = element_text(size=16, family="CM Roman"),
+#         axis.title.x = element_text(face="italic"),
+#         axis.title.y = element_text(face="bold"))
+# 
+# dev.off()
+# 
+# # Embed the fonts
+# embed_fonts("ggplot_cm.pdf", outfile="ggplot_cm_embed.pdf")
+```
 
 
 

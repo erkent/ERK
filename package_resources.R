@@ -1,4 +1,5 @@
 library(devtools)
+library(usethis)
 
 # create_package("../ERK/")
 
@@ -20,7 +21,6 @@ document()
 # devtools::build_readme()
 
 
-library(usethis)
 # usethis::use_vignette("LiDAR_functions")
 # devtools::build_rmd("./vignettes/LiDAR_functions.Rmd")
 
@@ -37,6 +37,12 @@ devtools::build_rmd(files = "./vignettes/plotting_functions.Rmd")
 # use_package("ggplotify")
 # use_package("gtable")
 # use_package("showtext")
+use_package("lemon")
+
+
+
+use_r("theme_ERK")
+
 
 
 getwd()

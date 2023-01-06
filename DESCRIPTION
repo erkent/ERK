@@ -18,4 +18,5 @@ Imports:
     ggplotify,
     grid,
     gtable,
+    lemon,
     showtext
