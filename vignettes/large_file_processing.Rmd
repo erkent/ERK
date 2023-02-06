@@ -1,0 +1,72 @@
+---
+title: "large_file_processing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{large_file_processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ERK)
+library(data.table)
+```
+
+A common issue when working with LiDAR data is that large point cloud files need to be read in and we run out of memory. In some cases a solution is to simply read in and process smaller portions of the file at a time. Below is an example. 
+
+```{r}
+
+df <- data.table(c1 = 1:30, c2 = 1:30)
+fwrite(df, "file_split_readin_test.txt")
+df2 <- data.table(c1 = 1:50 + 100, c2 = 1:50 + 100)
+fwrite(df2, "file_split_readin_test2.txt")
+
+fli <- list.files("./", pattern = "file_split_readin")
+fl <- list.files("./", pattern = "file_split_readin", full.names = TRUE)
+
+f <- 1
+for(f in 1:length(fl))
+{
+    rows_per_readin <- 11 # generally set to ~ 1 million
+    lines_to_skip <- 0
+    file_part <- 1
+    end_of_file_reached <- FALSE
+    
+    while(end_of_file_reached == FALSE)
+    {
+      print(fli[f])
+      print(paste0("Part: ", file_part))
+      
+      df <- fread(fl[f], skip = 1 + lines_to_skip, nrow = rows_per_readin, fill = FALSE, header = FALSE)
+      
+      lines_to_skip <- lines_to_skip + rows_per_readin
+      file_part <- file_part + 1
+      
+      if(nrow(df) < rows_per_readin)
+      {
+        end_of_file_reached <- TRUE
+      }
+      
+      ##############################################################################################
+      # do processing on each file part here
+      
+      print(nrow(df))
+      
+    }
+}
+
+
+# delete the test files that we set up
+# generally do not want to do this when actually processing LiDAR data
+# file.remove(fl)
+
+
+```
+

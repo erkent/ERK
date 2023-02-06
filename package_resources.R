@@ -43,6 +43,18 @@ use_package("lemon")
 
 use_r("theme_ERK")
 
+usethis::use_vignette("large_file_processing")
+
+devtools::build_rmd(files = "./vignettes/large_file_processing.Rmd")
+
+
+
+
+
+
+
+
+
 
 
 getwd()
