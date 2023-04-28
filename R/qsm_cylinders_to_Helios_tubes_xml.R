@@ -43,7 +43,7 @@ qsm_cylinders_to_Helios_tubes_xml <- function(cylinder_file, output_file, subdiv
     transform <- paste(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, sep = " ")
     color <- paste(0,0.75,0, sep = " ")
     #  here just write a default texture, but don't need to with the next Helios version when bug is fixed
-    texture <- "../../../plugins/visualizer/textures/wood.jpg"
+    # texture <- "../../../plugins/visualizer/textures/wood.jpg"
 
     # create vector of object data types for the specified data fields
     types <- data.table(type = do.call(rbind, lapply(this_seg[, data_fields, with = FALSE], typeof)))
@@ -56,7 +56,7 @@ qsm_cylinders_to_Helios_tubes_xml <- function(cylinder_file, output_file, subdiv
     l2 <- c("  <tube>",
             paste0("    <objID>",i,"</objID>"),
 
-            paste0("    <texture>", texture, "</texture>"),
+            # paste0("    <texture>", texture, "</texture>"),
             paste0("    <transform>", transform, "</transform>"),
             paste0("    <subdivisions>", subdiv, "</subdivisions>"))
 

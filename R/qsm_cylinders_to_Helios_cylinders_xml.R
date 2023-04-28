@@ -85,7 +85,7 @@ qsm_cylinders_to_Helios_cylinders_xml <- function(cylinder_file, output_file, su
     l2 <- c("  <cone>",
             paste0("    <objID>",i,"</objID>"),
             paste0("    <color>",color, "</color>"),
-            paste0("    <texture>", texture, "</texture>"),
+            # paste0("    <texture>", texture, "</texture>"),
             paste0("    <transform>", transform, "</transform>"),
             paste0("    <subdivisions>", subdiv, "</subdivisions>"),
             "    <nodes>",
