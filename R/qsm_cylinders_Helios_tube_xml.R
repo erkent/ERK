@@ -115,7 +115,6 @@ qsm_cylinders_to_Helios_tubes_xml <- function(cylinder_file, output_file, subdiv
 #' @note if branch_file is provided "branch_" is appended to the beginning of each of that file's column names before joining to the cylinder file. If data_fields is provided, append "branch_" when referencing these column names.
 #' @export
 #'
-#' @examples
 assign_qsm_segments <- function(cylinders)
 {
 
@@ -316,8 +315,6 @@ assign_qsm_segments <- function(cylinders)
 #' @note if data_fields is not provided, all columns of the TreeQSM output (cylinder_file and branch_file if provided) are written as object data
 #' @note if branch_file is provided "branch_" is appended to the beginning of each of that file's column names before joining to the cylinder file. If data_fields is provided, append "branch_" when referencing these column names.
 #' @export
-#'
-#' @examples
 qsm_cylinders_to_Helios_cylinders_xml <- function(cylinder_file, output_file, subdiv = 5, data_fields, branch_file){
 
   # if no data_fields are provided, use all fields not used in constructing the cylinder geometry
