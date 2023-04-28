@@ -7,6 +7,7 @@
 #' @param branch_file optional branch text output file from TreeQSM (need to set inputs.savetxt = 1 in create_input.m of TreeQSM)
 #' @note if data_fields is not provided, all columns of the TreeQSM output (cylinder_file and branch_file if provided) are written as object data
 #' @note if branch_file is provided "branch_" is appended to the beginning of each of that file's column names before joining to the cylinder file. If data_fields is provided, append "branch_" when referencing these column names.
+#' @import data.table
 #' @export
 qsm_cylinders_to_Helios_cylinders_xml <- function(cylinder_file, output_file, subdiv = 5, data_fields, branch_file){
 
