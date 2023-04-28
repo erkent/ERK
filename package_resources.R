@@ -49,12 +49,16 @@ devtools::build_rmd(files = "./vignettes/large_file_processing.Rmd")
 
 
 
+use_r("scan_location_box_buffer")
 
 
+use_r("qsm_cylinders_Helios_tube_xml")
+usethis::use_vignette("qsm_cylinders_Helios_tube_xml")
 
 
-
-
+# use_r("qsm_cylinders_to_Helios_tubes_xml")
+# use_r("qsm_cylinders_to_Helios_cylinders_xml")
+# use_r("assign_qsm_segments")
 
 
 getwd()
